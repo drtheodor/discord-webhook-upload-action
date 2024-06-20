@@ -1,5 +1,21 @@
 const core = require('@actions/core')
-const { Webhook } = require('discord-webhook-node')
+const { WebhookClient } = require('discord.js')
+
+function files(path) {
+  if (file.endsWith('*')) {
+    let files = []
+
+    fs.readdir(file, (err, files) => {
+      files.forEach(f => {
+        files.add(f);
+      })
+    })
+
+    return files
+  }
+
+  return [path]
+}
 
 /**
  * The main function for the action.
@@ -10,27 +26,20 @@ async function run() {
     const url = core.getInput('url')
     const username = core.getInput('username')
     const avatar = core.getInput('avatar')
-
     const file = core.getInput('file')
 
-    const hook = new Webhook(url)
+    const webhookClient = new WebhookClient({ url })
 
-    hook.setUsername(username)
-    hook.setAvatar(avatar)
+    const files = files(file)
+    core.info(`Sending ${files}`)
 
-    if (file.endsWith('*')) {
-      fs.readdir(file, (err, files) => {
-        files.forEach(async f => {
-          core.info(`Sent file from ${file}: ${f}`)
-          await hook.sendFile(f)
-        })
-      })
-
-      return
-    }
-
-    core.info(`Sent ${file}`)
-    //await hook.sendFile(file)
+    await webhookClient.send({
+      content: '',
+      username,
+      avatarURL: avatar,
+      embeds: [embed],
+      files: files(file)
+    })
   } catch (error) {
     core.setFailed(error.message)
   }
