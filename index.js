@@ -15,7 +15,7 @@ try {
     hook.setUsername(username);
     hook.setAvatar(avatar);
 
-    hook.send("Hello there!");
+    hook.sendFile(file);
 } catch (error) {
   core.setFailed(error.message);
 }
