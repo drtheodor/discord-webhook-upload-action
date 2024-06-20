@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 function flatFiles(file) {
     if (file.endsWith('*')) {
         let paths = []
