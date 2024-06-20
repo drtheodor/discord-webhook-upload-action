@@ -21,7 +21,7 @@ async function run() {
     const files = flatFiles(file)
     core.info(`Sending ${files}`)
 
-    let commits = github.context.payload.commits.forEach((commit) => commitFormat
+    const commits = github.context.payload.commits.map((commit) => commitFormat
       .replace('%AUTHOR%', commit.author.name)
       .replace('%MESSAGE%', commit.message)
       .replace('%LINK%', commit.url)
