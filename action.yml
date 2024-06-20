@@ -20,7 +20,13 @@ inputs:
   message:
     description: 'Message to send'
     required: false
-    default: 'New dev build:'
+    default: |
+      New dev build:
+      %COMMITS%
+  commit:
+    description: 'Per-commit message'
+    required: false
+    default: '> [%MESSAGE%](%LINK%) by %AUTHOR%'
 runs:
   using: 'node20'
   main: 'dist/index.js'

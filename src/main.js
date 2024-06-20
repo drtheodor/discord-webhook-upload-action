@@ -12,18 +12,25 @@ async function run() {
     const username = core.getInput('username')
     const avatar = core.getInput('avatar')
     const file = core.getInput('file')
-    const message = core.getInput('message')
+    const rawMessage = core.getInput('message')
+    const commitFormat = core.getInput('commit')
 
     const webhookClient = new WebhookClient({ url })
 
     const files = flatFiles(file)
     core.info(`Sending ${files}`)
 
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+
+    let commits = payload.commits.flatMap((commit) => commitFormat.replace('%AUTHOR%', commit.author.name)
+      .replace('%MESSAGE%', commit.message).replace('%LINK%', commit.url));
+
+    const message = rawMessage.replace('%COMMITS%', commits.join('\n'))
+
     await webhookClient.send({
       content: message,
       username,
       avatarURL: avatar,
-      //embeds: [embed],
       files: files
     })
   } catch (error) {
