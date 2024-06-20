@@ -21,11 +21,11 @@ async function run() {
     const files = flatFiles(file)
     core.info(`Sending ${files}`)
 
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-
-    core.info(`payload: ${payload}`)
-    let commits = payload.commits.forEach((commit) => commitFormat.replace('%AUTHOR%', commit.author.name)
-      .replace('%MESSAGE%', commit.message).replace('%LINK%', commit.url));
+    let commits = github.context.payload.commits.forEach((commit) => commitFormat
+      .replace('%AUTHOR%', commit.author.name)
+      .replace('%MESSAGE%', commit.message)
+      .replace('%LINK%', commit.url)
+    );
 
     const message = rawMessage.replace('%COMMITS%', commits.join('\n'))
 
