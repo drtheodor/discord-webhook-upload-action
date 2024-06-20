@@ -1,17 +1,17 @@
-function files(path) {
+function flatFiles(file) {
     if (file.endsWith('*')) {
-        let files = []
+        let paths = []
 
-        fs.readdir(file, (err, files) => {
-        files.forEach(f => {
-            files.add(f);
-        })
+        fs.readdir(file.slice(0, file.length - 1), (err, files) => {
+            files.forEach(f => {
+                paths.add(f);
+            })
         })
 
-        return files
+        return paths
     }
 
     return [path]
 }
 
-module.exports = { files }
+module.exports = { flatFiles }

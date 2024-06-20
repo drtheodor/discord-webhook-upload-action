@@ -1,6 +1,6 @@
 const core = require('@actions/core')
 const { WebhookClient } = require('discord.js')
-const { files } = require('./util')
+const { flatFiles } = require('./util')
 
 /**
  * The main function for the action.
@@ -15,7 +15,7 @@ async function run() {
 
     const webhookClient = new WebhookClient({ url })
 
-    const files = files(file)
+    const files = flatFiles(file)
     core.info(`Sending ${files}`)
 
     await webhookClient.send({
@@ -23,7 +23,7 @@ async function run() {
       username,
       avatarURL: avatar,
       embeds: [embed],
-      files: files(file)
+      files: files
     })
   } catch (error) {
     core.setFailed(error.message)
