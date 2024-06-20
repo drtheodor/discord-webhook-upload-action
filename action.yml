@@ -1,0 +1,22 @@
+name: 'Discord Webhook Upload'
+description: 'Send a file to discord webhook'
+inputs:
+  url:  # id of input
+    description: 'Webhook url'
+    required: true
+    default: ''
+  username:
+    description: 'Webhook username'
+    required: false
+    default: 'Username'
+  avatar:
+    description: 'Avatar url'
+    required: false
+    default: ''
+  file:
+    description: 'File to send'
+    required: true
+    default: ''
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
