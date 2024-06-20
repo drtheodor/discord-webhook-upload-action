@@ -23,6 +23,7 @@ async function run() {
 
     const payload = JSON.stringify(github.context.payload, undefined, 2)
 
+    core.info(`payload: ${payload}`)
     let commits = payload.commits.flatMap((commit) => commitFormat.replace('%AUTHOR%', commit.author.name)
       .replace('%MESSAGE%', commit.message).replace('%LINK%', commit.url));
 
