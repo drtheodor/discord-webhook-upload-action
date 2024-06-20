@@ -26,7 +26,7 @@ inputs:
   commit:
     description: 'Per-commit message'
     required: false
-    default: '> [<%MESSAGE%>](%LINK%) by [%AUTHOR%](<%AUTHOR_LINK%>)'
+    default: '> [%MESSAGE%](<%LINK%>) by [%AUTHOR%](<%AUTHOR_LINK%>)'
 runs:
   using: 'node20'
   main: 'dist/index.js'
