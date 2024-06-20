@@ -1,7 +1,7 @@
 name: 'Discord Webhook Upload'
 description: 'Send a file to discord webhook'
 inputs:
-  url:  # id of input
+  url: # id of input
     description: 'Webhook url'
     required: true
     default: ''
