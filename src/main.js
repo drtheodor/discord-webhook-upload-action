@@ -12,6 +12,7 @@ async function run() {
     const username = core.getInput('username')
     const avatar = core.getInput('avatar')
     const file = core.getInput('file')
+    const message = core.getInput('message')
 
     const webhookClient = new WebhookClient({ url })
 
@@ -19,7 +20,7 @@ async function run() {
     core.info(`Sending ${files}`)
 
     await webhookClient.send({
-      content: '',
+      content: message,
       username,
       avatarURL: avatar,
       //embeds: [embed],

@@ -17,6 +17,10 @@ inputs:
     description: 'File to send'
     required: true
     default: ''
+  message:
+    description: 'Message to send'
+    required: false
+    default: 'New dev build:'
 runs:
   using: 'node20'
   main: 'dist/index.js'
