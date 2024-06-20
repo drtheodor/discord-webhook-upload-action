@@ -21,7 +21,7 @@ async function run() {
     if (file.endsWith('*')) {
       fs.readdir(file, (err, files) => {
         files.forEach(async f => {
-          core.debug(`Sent file from ${file}: ${f}`)
+          core.info(`Sent file from ${file}: ${f}`)
           await hook.sendFile(f)
         })
       })
@@ -29,8 +29,8 @@ async function run() {
       return
     }
 
-    core.debug(`Sent ${file}`)
-    await hook.sendFile(file)
+    core.info(`Sent ${file}`)
+    //await hook.sendFile(file)
   } catch (error) {
     core.setFailed(error.message)
   }
