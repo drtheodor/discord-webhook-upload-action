@@ -4,14 +4,14 @@ function flatFiles(file) {
 
         fs.readdir(file.slice(0, file.length - 1), (err, files) => {
             files.forEach(f => {
-                paths.add(f);
+                paths.push(f);
             })
         })
 
         return paths
     }
 
-    return [path]
+    return [file]
 }
 
 module.exports = { flatFiles }
