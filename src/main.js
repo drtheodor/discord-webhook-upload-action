@@ -22,7 +22,7 @@ async function run() {
       content: '',
       username,
       avatarURL: avatar,
-      embeds: [embed],
+      //embeds: [embed],
       files: files
     })
   } catch (error) {
