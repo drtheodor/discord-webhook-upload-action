@@ -1,21 +1,6 @@
 const core = require('@actions/core')
 const { WebhookClient } = require('discord.js')
-
-function files(path) {
-  if (file.endsWith('*')) {
-    let files = []
-
-    fs.readdir(file, (err, files) => {
-      files.forEach(f => {
-        files.add(f);
-      })
-    })
-
-    return files
-  }
-
-  return [path]
-}
+const { files } = require('./util')
 
 /**
  * The main function for the action.
