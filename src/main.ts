@@ -2,8 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 import { WebhookClient } from 'discord.js'
-import { fileName, flatFiles, uploadArtifact } from './util'
-import { UploadArtifactOptions } from '@actions/artifact'
+import { flatFiles } from './util'
 
 type Commit = { author: { name: string; username: any }; message: string; url: string }
 
@@ -41,25 +40,6 @@ export async function run() {
       files: files
     })
   } catch (error) {
-    const options: UploadArtifactOptions = {}
-    options.retentionDays = 1;
-
-    const linkFormat = core.getInput('link')
-
-    files.forEach(async file => {
-      await uploadArtifact(
-        fileName(file), file, '.',
-        options,
-        (async url => {
-          const finalMessage = message + "\n" + linkFormat.replace('%URL%', url)
-
-          await webhookClient.send({
-            content: finalMessage,
-            username,
-            avatarURL: avatar
-          })
-        })
-      )
-    });
+    core.setFailed(error as Error)
   }
 }
