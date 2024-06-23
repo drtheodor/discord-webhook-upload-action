@@ -5,6 +5,5 @@ pkgs.mkShell {
   # were you to to use nix-build not nix-shell and build whatever you were working on
   buildInputs = with pkgs; [
     nodejs_22
-    just
   ];
 }
