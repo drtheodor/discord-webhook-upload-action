@@ -30,6 +30,7 @@ export async function run() {
     .replace('%LINK%', commit.url)
   );
 
+  core.info(commits[0])
 
   const message = rawMessage.replace('%COMMITS%', commits.join('\n'))
 
