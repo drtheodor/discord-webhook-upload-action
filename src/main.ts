@@ -26,7 +26,7 @@ export async function run() {
   const commits = github.context.payload.commits.map((commit: Commit) => commitFormat
     .replace('%AUTHOR%', commit.author.name)
     .replace('%AUTHOR_LINK%', `https://github.com/${commit.author.username}`)
-    .replace('%MESSAGE%', commit.message.replace(/(\r\n|\n|\r)/gm, ', '))
+    .replace('%MESSAGE%', commit.message.replace(/\r?\n|\r|\n/g, ', '))
     .replace('%LINK%', commit.url)
   );
 
