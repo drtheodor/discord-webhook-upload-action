@@ -9,7 +9,7 @@ export function flatFiles(file: string) {
     return [file]
 }
 
-export function stripFormat(text: str) {
+export function stripFormat(text: string) {
     text = text.replace(/(\r\n|\n|\r)/gm, ', ')
     
     while (text.includes('  '))
