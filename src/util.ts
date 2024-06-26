@@ -8,3 +8,10 @@ export function flatFiles(file: string) {
 
     return [file]
 }
+
+export function stripFormat(text: str) {
+    while (text.includes('  '))
+        text = text.replace('  ', ' ') // wow thats shit
+
+    return text
+}
