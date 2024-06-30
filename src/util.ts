@@ -17,3 +17,7 @@ export function stripFormat(text: string) {
 
     return text
 }
+
+export function truncate(text: string, n: number) {
+  return (text.length > n) ? text.slice(0, n - 3) + '...' : text;
+}
