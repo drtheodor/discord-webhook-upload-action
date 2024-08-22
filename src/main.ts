@@ -32,7 +32,7 @@ export async function run() {
 
   core.info(commits[0])
 
-  const message = rawMessage.replace('%COMMITS%', commits.join('\n'))
+  const message = rawMessage.replace('%COMMITS%', commits.join('\n')).substring(0, 1999);
 
   try {
     await webhookClient.send({
