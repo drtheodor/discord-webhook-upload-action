@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 import { WebhookClient } from 'discord.js'
-import { flatFiles } from './util'
+import { flatFiles, stripFormat, truncate } from './util'
 
 type Commit = { author: { name: string; username: any }; message: string; url: string }
 
@@ -26,13 +26,11 @@ export async function run() {
   const commits = github.context.payload.commits.map((commit: Commit) => commitFormat
     .replace('%AUTHOR%', commit.author.name)
     .replace('%AUTHOR_LINK%', `https://github.com/${commit.author.username}`)
-    .replace('%MESSAGE%', commit.message.split("\n")[0] + " (...)")
+    .replace('%MESSAGE%', stripFormat(commit.message))
     .replace('%LINK%', commit.url)
   );
 
-  core.info(commits[0])
-
-  const message = rawMessage.replace('%COMMITS%', commits.join('\n')).substring(0, 1999)
+  const message = rawMessage.replace('%COMMITS%', truncate(commits.join('\n'), 2000 - rawMessage.length)).substring(0, 1999);
 
   try {
     await webhookClient.send({
