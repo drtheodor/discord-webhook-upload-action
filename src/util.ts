@@ -8,3 +8,16 @@ export function flatFiles(file: string) {
 
     return [file]
 }
+
+export function stripFormat(text: string) {
+    text = text.replace(/(\r\n|\n|\r)/gm, ', ')
+    
+    while (text.includes('  '))
+        text = text.replace('  ', ' ') // wow thats shit
+
+    return text
+}
+
+export function truncate(text: string, n: number) {
+  return (text.length > n) ? text.slice(0, n - 3) + '...' : text;
+}
