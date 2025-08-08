@@ -41,7 +41,7 @@ jobs:
       run: ./gradlew build
 
     - name: Publish artifacts
-      uses: DrTheodor/discord-webhook-upload-action@180e436b3993cdca2e0a7d6d0951f417927bfe84
+      uses: DrTheodor/discord-webhook-upload-action@1e778986786ada4f9eedf766df8a19d5fc4eeede
       with:
         url: ${{ secrets.DEV_BUILDS }}
         username: george washington
@@ -58,12 +58,9 @@ jobs:
 You can use multiple placeholders:
 
 ### Commit placeholders
-- `%MESSAGE%` - commit message
-- `%LINK%` - link to the commit
-- `%AUTHOR%` - the author of the commit
-- `%AUTHOR_LINK%` - link to the author's profile
-
-### Message placeholders
-- `%COMMITS%` - the commits' messages. Gets replaced with the `commit` parameter formatted for each commit.
+- `${commitMessage}` - commit message
+- `${commitUrl}` - link to the commit
+- `${authorName}` - the author of the commit
+- `${authorUrl}` - link to the author's profile
 
 From [AIT](https://github.com/amblelabs/ait/blob/main/.github/workflows/publish-devbuilds.yml).
