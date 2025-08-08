@@ -1,45 +1,45 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
-import { WebhookClient } from 'discord.js'
-import { flatFiles, stripFormat, truncate } from './util'
+import { fmt, send } from './util'
 
 type Commit = { author: { name: string; username: any }; message: string; url: string }
 
-/**
- * The main function for the action.
- * @returns {Promise<void>} Resolves when the action is complete.
- */
+type CommitFormat = {
+  authorName: string,
+  authorUrl: string,
+  commitUrl: string,
+  commitMessage: string,
+}
+
+function fmtCommit(commit: Commit): string[] {
+  const commitFormat = core.getInput('message_commit')
+  return commit.message.split(/\r?\n|\r/).map(v => v.trim())
+  .map(message => fmt<CommitFormat>(commitFormat, { 
+      authorName: commit.author.name,
+      authorUrl: `https://github.com/${commit.author.username}`,
+      commitUrl: commit.url,
+      commitMessage: message,
+  }));
+}
+
 export async function run() {
-  const url = core.getInput('url')
-  const username = core.getInput('username')
-  const avatar = core.getInput('avatar')
-  const file = core.getInput('file')
-  const rawMessage = core.getInput('message')
-  const commitFormat = core.getInput('commit')
+  const commits: Commit[] = github.context.payload.commits;
+  
+  const msgHeader = core.getInput('message_header');
 
-  const webhookClient = new WebhookClient({ url })
-
-  const files = flatFiles(file)
-  core.info(`Sending ${files}`)
-
-  const commits = github.context.payload.commits.map((commit: Commit) => commitFormat
-    .replace('%AUTHOR%', commit.author.name)
-    .replace('%AUTHOR_LINK%', `https://github.com/${commit.author.username}`)
-    .replace('%MESSAGE%', stripFormat(commit.message))
-    .replace('%LINK%', commit.url)
-  );
-
-  const message = rawMessage.replace('%COMMITS%', truncate(commits.join('\n'), 2000 - rawMessage.length))
-
+  let message = msgHeader;
+  commits.map(commit => fmtCommit(commit)).forEach(v => message += '\n' + v);
+  
+  const url = core.getInput('url');
+  const username = core.getInput('username');
+  const avatar = core.getInput('avatar');
+  
+  const file = core.getInput('file');
+  
   try {
-    await webhookClient.send({
-      content: message,
-      username,
-      avatarURL: avatar,
-      files: files
-    })
-  } catch (error) {
-    core.setFailed(error as Error)
+    await send(url, username, avatar, message, file);
+  } catch (e) {
+    core.setFailed(e as Error);
   }
 }

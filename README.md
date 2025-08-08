@@ -44,13 +44,15 @@ jobs:
       uses: DrTheodor/discord-webhook-upload-action@v1.2
       with:
         url: ${{ secrets.DEV_BUILDS }}
-        file: 'build/libs/*'
         username: george washington
         avatar: 'https://i.imgur.com/uiFqrQh.png'
-        commit: '> :sparkles: [%MESSAGE%](<%LINK%>) by [%AUTHOR%](<%AUTHOR_LINK%>)'
-        message: |
+        
+        message_commit: '> :sparkles: [%MESSAGE%](<%LINK%>) by [%AUTHOR%](<%AUTHOR_LINK%>)'
+        message_header: |
           <:new1:1253371736510959636><:new2:1253371805734015006> New `Adventures in Time` dev build `#${{ github.run_number }}`:
           %COMMITS%
+            
+        file: 'build/libs/*'
 ```
 
 ## Formatting
