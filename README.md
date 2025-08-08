@@ -7,6 +7,7 @@ Example:
 - name: Publish artifacts
   uses: DrTheodor/discord-webhook-upload-action@1e778986786ada4f9eedf766df8a19d5fc4eeede
   with:
+    # the discord webhook url
     url: ${{ secrets.DEV_BUILDS }}
     username: george washington
     avatar: 'https://i.imgur.com/uiFqrQh.png'
