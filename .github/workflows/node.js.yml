@@ -6,6 +6,13 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'bun.lock'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'action.yml'
   pull_request:
     branches: [ "main" ]
 

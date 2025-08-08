@@ -47,10 +47,9 @@ jobs:
         username: george washington
         avatar: 'https://i.imgur.com/uiFqrQh.png'
         
-        message_commit: '> :sparkles: [%MESSAGE%](<%LINK%>) by [%AUTHOR%](<%AUTHOR_LINK%>)'
+        message_commit: '> :sparkles: [${commitMessage}](<${commitUrl}>) by [${authorName}](<${authorUrl}>)'
         message_header: |
           <:new1:1253371736510959636><:new2:1253371805734015006> New `Adventures in Time` dev build `#${{ github.run_number }}`:
-          %COMMITS%
             
         file: 'build/libs/*'
 ```

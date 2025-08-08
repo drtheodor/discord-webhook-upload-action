@@ -2,7 +2,7 @@ name: 'Discord Webhook Upload'
 description: 'Send a file to discord webhook'
 inputs:
   url: # id of input
-    description: 'Webhook url'
+    description: 'Webhook URL'
     required: true
     default: ''
   username:
@@ -10,27 +10,22 @@ inputs:
     required: false
     default: 'Username'
   avatar:
-    description: 'Avatar url'
+    description: 'Avatar URL'
     required: false
     default: ''
   file:
     description: 'File to send'
     required: true
     default: ''
-  message:
+  message_header:
     description: 'Message to send'
-    required: false
+    required: true
     default: |
       New dev build:
-      %COMMITS%
-  commit:
+  message_commit:
     description: 'Per-commit message'
     required: false
-    default: '> [%MESSAGE%](<%LINK%>) by [%AUTHOR%](<%AUTHOR_LINK%>)'
-  link:
-    description: 'Link message'
-    required: false
-    default: 'Get it [here](%URL%)'
+    default: '> [${commitMessage}](<${commitUrl}>) by [${authorName}](<${authorUrl}>)'
 runs:
   using: 'node20'
   main: 'dist/index.js'
