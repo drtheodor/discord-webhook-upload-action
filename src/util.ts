@@ -1,5 +1,6 @@
 import * as fs from 'fs';
-import { WebhookClient } from 'discord.js'
+import FormData from 'form-data';
+import { IncomingMessage } from 'http';
 
 export function fmt<T extends Record<string, unknown>>(
   template: string,
@@ -26,17 +27,6 @@ export async function send(
     file: string,
     options?: SplitOptions
 ) {
-    const webhookClient = new WebhookClient({ url });
-    
-    async function send(message: string) {
-        await webhookClient.send({
-            content: message,
-            username: name,
-            avatarURL: avatar,
-            files: flatFiles(file),
-        });
-    }
-    
     const {
         maxLength = 2000,
         char = '\n',
@@ -44,14 +34,51 @@ export async function send(
         append = ''
     } = options || {};
     
-    if (text.length < maxLength) {
-        return await send(text);
+    const path = flatFiles(file)[0];
+
+    const sendInternal = (form: FormData) => new Promise((
+        resolve: (value: IncomingMessage) => void, 
+        reject: (reason: Error) => void
+    ) => {
+        form.submit(url, (error, response) => {
+            if (error) reject(error);
+            else resolve(response);
+        });
+    });
+    
+    async function send(message: string, attachFile: boolean) {
+        const form = new FormData();
+
+        if (name) {
+            form.append('username', name);
+        }
+
+        if (avatar) {
+            form.append('avatar_url', avatar);
+        }
+        
+        form.append('content', message);
+
+        if (attachFile && path) {
+            form.append('file', fs.createReadStream(path));
+        }
+
+        const res = await sendInternal(form);
+        
+        if (res.statusCode != 200) {
+            throw new Error(`Error sending webhook: ${res.statusCode} status code.`);
+        }
     }
     
-    const splitText = splitMessage(text, { maxLength, char, prepend, append });
+    if (text.length < maxLength) {
+        return await send(text, true);
+    }
     
-    for (const chunk of splitText) {
-        await send(chunk);
+    const splitText: string[] = splitMessage(text, { maxLength, char, prepend, append });
+    
+    for (let i = 0; i < splitText.length; i++) {
+        const chunk = splitText[i];
+        await send(chunk, i == splitText.length - 1);
     }
 }
 
