@@ -142,7 +142,7 @@ function splitLongLine(line: string, maxChunkLength: number): string[] {
 function flatFiles(file: string) {
     if (file.endsWith('*')) {
       const sliced = file.slice(0, file.length - 1)
-      return fs.readdirSync(sliced).flatMap((f) => sliced + '/' + f);
+      return fs.readdirSync(sliced).flatMap(f => path.join(sliced, f));
     }
 
     return [file]
