@@ -1,7 +1,6 @@
 import { findFilesToUpload } from './search';
 
 import path from 'path';
-import fs from 'fs';
 import { sendDiscordWebhook, DiscordWebhookOptions } from './webhook';
 
 export function fmt<T extends Record<string, unknown>>(
