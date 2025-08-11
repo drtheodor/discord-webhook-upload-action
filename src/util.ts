@@ -1,8 +1,8 @@
-import { ExecuteWebhookData, Webhook } from 'discord-webhooks-node';
 import { findFilesToUpload } from './search';
 
 import path from 'path';
 import fs from 'fs';
+import { sendDiscordWebhook, DiscordWebhookOptions } from './webhook';
 
 export function fmt<T extends Record<string, unknown>>(
   template: string,
@@ -29,24 +29,21 @@ export async function send(
     file: string,
     maxLength: number = 2000,
 ) {
-    const paths = await findFilesToUpload(file);
-    
-    const webhook = new Webhook({ url });
-    webhook.setAvatar(avatar);
-    webhook.setUsername(name);
+    const paths = (await findFilesToUpload(file)).filesToUpload;
     
     async function send(message: string, attachFile: boolean) {
-        let data: ExecuteWebhookData = {
+        let data: DiscordWebhookOptions = {
+            username: name,
+            avatar_url: avatar,
+
             content: message,
         };
 
-        if (attachFile && paths.filesToUpload) {
-            console.log(paths.filesToUpload);
-            
-            data.files = paths.filesToUpload.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) }));
+        if (attachFile && paths) {
+            data.files = paths.map(file => ({ name: path.basename(file), data: file }));
         }
 
-        await webhook.execute(data);
+        await sendDiscordWebhook(url, data);
     }
     
     if (text.length < maxLength) {
