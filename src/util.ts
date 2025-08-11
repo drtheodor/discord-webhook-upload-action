@@ -37,6 +37,7 @@ export async function send(
         const res: DiscordFile[] = [];
 
         for (const file in paths) {
+            console.log(` > ${file}`);
             res.push({ name: path.basename(file), file: fs.readFileSync(file) });
         }
 
@@ -47,6 +48,7 @@ export async function send(
         let data: ExecuteWebhookData = {
             content: message,
         };
+        console.log(`content: '${message}'`);
 
         if (attachFile && paths) {
             data = data || { 
