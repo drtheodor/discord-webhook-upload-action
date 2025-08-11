@@ -42,9 +42,8 @@ export async function send(
 
         if (attachFile && paths.filesToUpload) {
             console.log(paths.filesToUpload);
-            data = data || { 
-                files: paths.filesToUpload.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) })),
-            };
+            
+            data.files = paths.filesToUpload.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) }));
         }
 
         await webhook.execute(data);
