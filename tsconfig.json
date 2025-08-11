@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "module": "es2022",
+    "module": "es2020",
     "lib": ["es2021"],
     "declaration": false,
     "sourceMap": true,
@@ -10,10 +10,8 @@
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
   },
-  "exclude": ["dist", "node_modules", "**/*.test.ts"]
+  "exclude": ["node_modules", "**/*.test.ts"]
 }
