@@ -33,7 +33,7 @@ export async function send(
     webhook.setAvatar(avatar);
     webhook.setUsername(name);
 
-    function attachFiles(): DiscordFile[] {
+    function attachFiles(paths: string[]): DiscordFile[] {
         const res: DiscordFile[] = [];
 
         for (const file in paths) {
@@ -52,7 +52,7 @@ export async function send(
 
         if (attachFile && paths) {
             data = data || { 
-                files: attachFiles(),
+                files: attachFiles(paths),
             };
         }
 
