@@ -5,7 +5,7 @@ An action that lets you upload files and send them as discord webhooks!
 Example:
 ```yaml
 - name: Publish artifacts
-  uses: DrTheodor/discord-webhook-upload-action@v1.0
+  uses: DrTheodor/discord-webhook-upload-action@v0.1
   with:
     # the discord webhook url
     url: ${{ secrets.WEBHOOK_URL }}
