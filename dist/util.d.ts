@@ -5,4 +5,4 @@ export interface SplitOptions {
     prepend?: string;
     append?: string;
 }
-export declare function send(url: string, name: string, avatar: string, text: string, file: string, options?: SplitOptions): Promise<void>;
+export declare function send(url: string, name: string, avatar: string, text: string, file: string, maxLength?: number): Promise<void>;
