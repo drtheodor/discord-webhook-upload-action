@@ -1,6 +1,7 @@
 import * as fs from 'fs';
-import { DiscordFile, ExecuteWebhookData, Webhook } from 'discord-webhooks-node';
+import { ExecuteWebhookData, Webhook } from 'discord-webhooks-node';
 import path from 'path';
+import { findFilesToUpload } from './search';
 
 export function fmt<T extends Record<string, unknown>>(
   template: string,
@@ -27,7 +28,7 @@ export async function send(
     file: string,
     maxLength: number = 2000,
 ) {
-    const paths = flatFiles(file);
+    const paths = await findFilesToUpload(file);
     
     const webhook = new Webhook({ url });
     webhook.setAvatar(avatar);
@@ -41,10 +42,10 @@ export async function send(
         console.log(`paths: ${paths}`);
 
         if (attachFile && paths) {
-            console.log('attaching files');
-            data = data || { 
+            console.log(paths);
+            /*data = data || { 
                 files: paths.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) })),
-            };
+            };*/
         }
 
         await webhook.execute(data);
@@ -128,13 +129,4 @@ function splitLongLine(line: string, maxChunkLength: number): string[] {
     }
     
     return chunks;
-}
-
-function flatFiles(file: string): string[] {
-    if (file.endsWith('*')) {
-      const sliced = file.slice(0, file.length - 1)
-      return fs.readdirSync(sliced).flatMap(f => path.join(__dirname, sliced, f));
-    }
-
-    return [file]
 }
