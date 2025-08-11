@@ -32,16 +32,6 @@ export async function send(
     const webhook = new Webhook({ url });
     webhook.setAvatar(avatar);
     webhook.setUsername(name);
-
-    function attachFiles(paths: string[]): DiscordFile[] {
-        const res: DiscordFile[] = [];
-
-        for (const file in paths) {
-            res.push({ name: path.basename(file), file: fs.readFileSync(file) });
-        }
-
-        return res;
-    }
     
     async function send(message: string, attachFile: boolean) {
         let data: ExecuteWebhookData = {
@@ -51,8 +41,9 @@ export async function send(
         console.log(`paths: ${paths}`);
 
         if (attachFile && paths) {
+            console.log('attaching files');
             data = data || { 
-                files: attachFiles(paths),
+                files: paths.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) })),
             };
         }
 
@@ -139,10 +130,10 @@ function splitLongLine(line: string, maxChunkLength: number): string[] {
     return chunks;
 }
 
-function flatFiles(file: string) {
+function flatFiles(file: string): string[] {
     if (file.endsWith('*')) {
       const sliced = file.slice(0, file.length - 1)
-      return fs.readdirSync(sliced).flatMap(f => path.join(sliced, f));
+      return fs.readdirSync(sliced).flatMap(f => path.join(__dirname, sliced, f));
     }
 
     return [file]
