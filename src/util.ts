@@ -1,7 +1,8 @@
-import * as fs from 'fs';
 import { ExecuteWebhookData, Webhook } from 'discord-webhooks-node';
-import path from 'path';
 import { findFilesToUpload } from './search';
+
+import path from 'path';
+import fs from 'fs';
 
 export function fmt<T extends Record<string, unknown>>(
   template: string,
@@ -38,14 +39,11 @@ export async function send(
         let data: ExecuteWebhookData = {
             content: message,
         };
-        console.log(`content: '${message}'`);
-        console.log(`paths: ${paths}`);
 
         if (attachFile && paths) {
-            console.log(paths);
-            /*data = data || { 
-                files: paths.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) })),
-            };*/
+            data = data || { 
+                files: paths.filesToUpload.map(file => ({ name: path.basename(file), file: fs.readFileSync(file) })),
+            };
         }
 
         await webhook.execute(data);

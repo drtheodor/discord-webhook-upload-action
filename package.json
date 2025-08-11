@@ -1,14 +1,10 @@
 {
   "name": "discord-webhook-upload-action",
   "version": "1.0.0",
+  "main": "dist/index.js",
   "scripts": {
-    "bundle": "npm run format:write && npm run package",
-    "format:write": "npx prettier --write .",
-    "format:check": "npx prettier --check .",
-    "lint": "npx eslint . -c ./.github/linters/.eslintrc.yml",
-    "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt --minify",
-    "package:watch": "npm run package -- --watch",
-    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
+    "lint": "eslint **/*.ts",
+    "package": "npx ncc build src/index.ts -o dist --license licenses.txt --minify"
   },
   "keywords": [],
   "author": "",
@@ -30,8 +26,5 @@
     "prettier": "^3.3.2",
     "typescript": "^5.4.2",
     "glob": "^8.0.3"
-  },
-  "exports": {
-    ".": "./dist/index.js"
   }
 }
