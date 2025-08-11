@@ -36137,6 +36137,7 @@ async function send(url, name, avatar, text, file, maxLength = 2000) {
     function attachFiles() {
         const res = [];
         for (const file in paths) {
+            console.log(` > ${file}`);
             res.push({ name: external_path_default().basename(file), file: external_fs_.readFileSync(file) });
         }
         return res;
@@ -36145,6 +36146,7 @@ async function send(url, name, avatar, text, file, maxLength = 2000) {
         let data = {
             content: message,
         };
+        console.log(`content: '${message}'`);
         if (attachFile && paths) {
             data = data || {
                 files: attachFiles(),
