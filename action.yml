@@ -1,5 +1,7 @@
 name: 'Discord Webhook Upload'
-description: 'Send a file to discord webhook'
+description: 'Send a message to discord webhook on a commit'
+icon: 'cast'
+color: 'blue'
 inputs:
   url: # id of input
     description: 'Webhook URL'
@@ -15,7 +17,7 @@ inputs:
     default: ''
   file:
     description: 'File to send'
-    required: true
+    required: false
     default: ''
   message_header:
     description: 'Message to send'
