@@ -1,8 +1,6 @@
 import https from 'https';
-import http from 'http';
 import FormData from 'form-data';
 import fs from 'fs';
-import path from 'path';
 import { URL } from 'url';
 
 export interface DiscordWebhookOptions {
@@ -15,18 +13,12 @@ export interface DiscordWebhookOptions {
     }[];
 }
 
-/**
- * Send a Discord webhook with optional files
- * @param webhookUrl The Discord webhook URL
- * @param options Webhook options including files
- */
 export async function sendDiscordWebhook(
   webhookUrl: string,
   options: DiscordWebhookOptions
 ): Promise<void> {
     const formData = new FormData();
 
-    // Add JSON payload for the message
     const payload = {
         username: options.username,
         avatar_url: options.avatar_url,
@@ -40,11 +32,9 @@ export async function sendDiscordWebhook(
             let fileData: Buffer | fs.ReadStream;
 
             if (typeof file.data === 'string') {
-                // If it's a file path, read the file
                 if (fs.existsSync(file.data)) {
                     fileData = fs.createReadStream(file.data);
                 } else {
-                    // If it's not a file path, treat as text content
                     fileData = Buffer.from(file.data, 'utf-8');
                 }
             } else {
@@ -63,7 +53,7 @@ export async function sendDiscordWebhook(
         path: url.pathname,
         method: 'POST',
         headers: {
-        ...formData.getHeaders(),
+            ...formData.getHeaders(),
         },
     };
 

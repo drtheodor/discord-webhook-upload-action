@@ -9,7 +9,7 @@ export function fmt<T extends Record<string, unknown>>(
 ): string {
     return template.replace(/\${([^}]+)}/g, (match, key: string) => {
         const trimmedKey = key.trim();
-        return String(values[trimmedKey as keyof T] ?? match); // Fallback to original if key is missing
+        return String(values[trimmedKey as keyof T] ?? match); 
     });
 }
 
@@ -73,21 +73,17 @@ function splitMessage(
     const lines = text.split(char);
     
     for (const line of lines) {
-        // If adding this line would exceed maxLength
         if (currentChunk.length + line.length + append.length + char.length > maxLength) {
-            // If currentChunk has content besides prepend, push it
             if (currentChunk !== prepend) {
                 chunks.push(currentChunk + append);
                 currentChunk = prepend + line;
-            } 
-            // If even a single line is too long, split it
-            else if (line.length > maxLength - prepend.length - append.length) {
+            } else if (line.length > maxLength - prepend.length - append.length) {
                 const lineChunks = splitLongLine(
                     line, 
                     maxLength - prepend.length - append.length
                 );
                 
-                for (const [i, chunk] of lineChunks.entries()) {
+                for (const chunk in lineChunks) {
                     chunks.push(prepend + chunk + append);
                 }
                 
@@ -98,10 +94,10 @@ function splitMessage(
             }
         } else {
             if (currentChunk !== prepend) {
-                currentChunk += char + line;
-            } else {
-                currentChunk += line;
+                currentChunk += char;
             }
+            
+            currentChunk += line;
         }
     }
     

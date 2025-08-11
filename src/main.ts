@@ -12,10 +12,9 @@ type CommitFormat = {
   commitMessage: string,
 }
 
-function fmtCommit(commit: Commit): string[] {
-  const commitFormat = core.getInput('message_commit')
+function fmtCommit(format: string, commit: Commit): string[] {
   return commit.message.split(/\r?\n|\r/).map(v => v.trim())
-  .map(message => fmt<CommitFormat>(commitFormat, { 
+  .map(message => fmt<CommitFormat>(format, { 
       authorName: commit.author.name,
       authorUrl: `https://github.com/${commit.author.username}`,
       commitUrl: commit.url,
@@ -27,9 +26,10 @@ export async function run() {
   const commits: Commit[] = github.context.payload.commits;
   
   const msgHeader = core.getInput('message_header');
+  const msgCommit = core.getInput('message_commit')
 
   let message = msgHeader;
-  commits.map(commit => fmtCommit(commit)).forEach(v => message += '\n' + v);
+  commits.map(commit => fmtCommit(msgCommit, commit)).forEach(v => message += '\n' + v);
   
   const url = core.getInput('url');
   const username = core.getInput('username');
