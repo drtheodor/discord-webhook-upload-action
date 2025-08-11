@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import FormData from 'form-data';
-import { IncomingMessage } from 'http';
+import { DiscordFile, ExecuteWebhookData, Webhook } from 'discord-webhooks-node';
+import path from 'path';
 
 export function fmt<T extends Record<string, unknown>>(
   template: string,
@@ -25,60 +25,46 @@ export async function send(
     avatar: string,
     text: string,
     file: string,
-    options?: SplitOptions
+    maxLength: number = 2000,
 ) {
-    const {
-        maxLength = 2000,
-        char = '\n',
-        prepend = '',
-        append = ''
-    } = options || {};
+    const paths = flatFiles(file);
     
-    const path = flatFiles(file)[0];
+    const webhook = new Webhook({ url });
+    webhook.setAvatar(avatar);
+    webhook.setUsername(name);
 
-    const sendInternal = (form: FormData) => new Promise((
-        resolve: (value: IncomingMessage) => void, 
-        reject: (reason: Error) => void
-    ) => {
-        form.submit(url, (error, response) => {
-            if (error) reject(error);
-            else resolve(response);
-        });
-    });
+    function attachFiles(): DiscordFile[] {
+        const res: DiscordFile[] = [];
+
+        for (const file in paths) {
+            res.push({ name: path.basename(file), file: fs.readFileSync(file) });
+        }
+
+        return res;
+    }
     
     async function send(message: string, attachFile: boolean) {
-        const form = new FormData();
+        let data: ExecuteWebhookData = {
+            content: message,
+        };
 
-        if (name) {
-            form.append('username', name);
+        if (attachFile && paths) {
+            data = data || { 
+                files: attachFiles(),
+            };
         }
 
-        if (avatar) {
-            form.append('avatar_url', avatar);
-        }
-        
-        form.append('content', message);
-
-        if (attachFile && path) {
-            form.append('file', fs.createReadStream(path));
-        }
-
-        const res = await sendInternal(form);
-        
-        if (res.statusCode != 200) {
-            throw new Error(`Error sending webhook: ${res.statusCode} status code.`);
-        }
+        await webhook.execute(data);
     }
     
     if (text.length < maxLength) {
         return await send(text, true);
     }
     
-    const splitText: string[] = splitMessage(text, { maxLength, char, prepend, append });
+    const splitText: string[] = splitMessage(text, { maxLength });
     
     for (let i = 0; i < splitText.length; i++) {
-        const chunk = splitText[i];
-        await send(chunk, i == splitText.length - 1);
+        await send(splitText[i], i == splitText.length - 1);
     }
 }
 
