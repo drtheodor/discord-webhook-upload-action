@@ -13,7 +13,7 @@ type CommitFormat = {
 }
 
 function fmtCommit(format: string, commit: Commit): string[] {
-    return commit.message.split(/\r?\n|\r/).map(v => v.trim())
+    return commit.message.split(/\r?\n|\r/).map(v => v.trim()).filter(Boolean)
         .map(message => fmt<CommitFormat>(format, { 
             authorName: commit.author.name,
             authorUrl: `https://github.com/${commit.author.username}`,
@@ -32,7 +32,7 @@ export async function run() {
     
     if (mode === 'commit') {
         const commits: Commit[] = github.context.payload.commits;
-        commits.map(commit => fmtCommit(msgPart, commit)).forEach(v => message += '\n' + v);
+        commits.flatMap(commit => fmtCommit(msgPart, commit)).forEach(v => message += '\n' + v);
     }
     
     const url = core.getInput('url');
