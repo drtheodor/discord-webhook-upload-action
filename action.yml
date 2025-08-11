@@ -19,6 +19,10 @@ inputs:
     description: 'File to send'
     required: false
     default: ''
+  mode:
+    description: 'Action mode: currently only supports "commit"'
+    required: false
+    default: 'commit'
   message_header:
     description: 'Message to send'
     required: true

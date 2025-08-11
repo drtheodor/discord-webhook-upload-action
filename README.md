@@ -26,9 +26,10 @@ Example:
 - `url`: the webhook url
 - `username`: username
 - `avatar`: url to an image of the avatar (profile picture)
-- `message_commit`: the formatting for each commit
+- `message_<mode>`: the formatting for each part of the message, depending on the mode (e.g. `message_commit`)
 - `message_header`: the formatting for each message
 - `file`: glob pattern for the files
+- `mode`: the mode for the action to work in, currently only supports "commit"
 
 ## Formatting
 You can use multiple placeholders:
