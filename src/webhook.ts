@@ -66,7 +66,7 @@ export async function sendDiscordWebhook(
             });
 
             res.on('end', () => {
-                if (res.statusCode && res.statusCode == 200) {
+                if (res.statusCode && (res.statusCode == 200 || res.statusCode == 204)) {
                     console.log('Webhook sent successfully');
                     resolve();
                 } else {
