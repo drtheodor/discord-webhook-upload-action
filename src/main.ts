@@ -52,10 +52,11 @@ function fmtCommit(commit: Commit): string[] {
     }
   ]
 
-  const lines = commit.message.split(/\r?\n|\r/).map(line => line.trim())
-
   // Separate header from the rest, filter out special lines (co-authors, signed-off-by)
-  const [commitHeader, ...remainingLines] = lines.filter(Boolean)
+  const [commitHeader, ...remainingLines] = commit.message
+    .split(/\r?\n|\r/)
+    .map(line => line.trim())
+    .filter(Boolean)
 
   const commitDesc = remainingLines.filter(line => {
     if (line.startsWith(PREFIX_CO_AUTHORED)) {
@@ -68,7 +69,7 @@ function fmtCommit(commit: Commit): string[] {
     return !line.startsWith(PREFIX_SIGNED_BY) // exclude signed-off-by lines
   })
 
-  const commitHeaderFmt = core.getInput('msg_commit_header')
+  const commitHeaderFmt = core.getInput('msg_commit')
   const commitMessageFmt = core.getInput('msg_commit_desc')
   const messageAuthorFmt = core.getInput('msg_author')
   const messageAuthorSep = core.getInput('msg_author_separator')
