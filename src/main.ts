@@ -17,7 +17,7 @@ type AuthorFormat = {
 type CommitFormat = {
   commitUrl: string
   commitMessage: string
-  author: string
+  authors: string
 }
 
 type CommitMessageFormat = {
@@ -79,7 +79,7 @@ function fmtCommit(commit: Commit): string[] {
     .join(messageAuthorSep)
 
   const formattedHeader = fmt<CommitFormat>(commitHeaderFmt, {
-    author: authorBlock,
+    authors: authorBlock,
     commitUrl: commit.url,
     commitMessage: commitHeader
   })
