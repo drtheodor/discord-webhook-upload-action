@@ -3,6 +3,10 @@ import * as github from '@actions/github'
 
 import { fmt, send } from './util'
 
+type MessageFormat = {
+  commits: string
+}
+
 type Commit = {
   author: { name: string; username: string }
   message: string
@@ -98,14 +102,16 @@ export async function run(): Promise<void> {
 
   let finalMessage = baseMessage
 
-  const commits = github.context.payload.commits as Commit[]
+  if ('commits' in github.context.payload) {
+    const commits = github.context.payload.commits as Commit[]
 
-  if (commits && commits.length > 0) {
-    const formattedCommits = commits.flatMap(fmtCommit).join('\n')
+    if (commits && commits.length > 0) {
+      const formattedCommits = commits.flatMap(fmtCommit).join('\n')
 
-    fmt(finalMessage, {
-      commits: formattedCommits
-    })
+      fmt<MessageFormat>(finalMessage, {
+        commits: formattedCommits
+      })
+    }
   }
 
   const url = core.getInput('url')
