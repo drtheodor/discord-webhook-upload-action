@@ -26,16 +26,23 @@ Example:
 - `url`: the webhook url
 - `username`: username
 - `avatar`: url to an image of the avatar (profile picture)
-- `message_<mode>`: the formatting for each part of the message, depending on the mode (e.g. `message_commit`)
-- `message_header`: the formatting for each message
+- `message`: the base message
 - `file`: glob pattern for the files
-- `mode`: the mode for the action to work in, currently only supports "commit"
+- `mode`: the mode for the action to work in, currently only supports "commit" and "echo".
+
+"commit" mode will append commit message formatting (see below or the example usage), while "echo" will only send the `message`.
 
 ## Formatting
 You can use multiple placeholders:
 
-### Commit placeholders
+### Commit description placeholders (`msg_commit_desc`)
+- `${message}` - the commit message (a single line)
+
+### Commit placeholders (`msg_commit`)
 - `${commitMessage}` - commit message
 - `${commitUrl}` - link to the commit
+- `${authors}` - the authors
+
+### Author placeholders (`msg_author`)
 - `${authorName}` - the author of the commit
 - `${authorUrl}` - link to the author's profile
