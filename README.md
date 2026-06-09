@@ -28,12 +28,12 @@ Example:
 - `avatar`: url to an image of the avatar (profile picture)
 - `message`: the base message
 - `file`: glob pattern for the files
-- `mode`: the mode for the action to work in, currently only supports "commit" and "echo".
-
-"commit" mode will append commit message formatting (see below or the example usage), while "echo" will only send the `message`.
 
 ## Formatting
 You can use multiple placeholders:
+
+### Message placeholders (`message`)
+- `${commits}` - the commits (will use `msg_commit` and `msg_commit_desc`)
 
 ### Commit description placeholders (`msg_commit_desc`)
 - `${message}` - the commit message (a single line)

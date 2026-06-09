@@ -94,12 +94,14 @@ function fmtCommit(commit: Commit): string[] {
 }
 
 export async function run(): Promise<void> {
-  const mode = core.getInput('mode')
   const baseMessage = core.getInput('message')
 
   let finalMessage = baseMessage
 
-  if (mode === 'commit') {
+  if (
+    'commits' in github.context.payload &&
+    baseMessage.includes('${commits}')
+  ) {
     const commits = github.context.payload.commits as Commit[]
 
     if (commits && commits.length > 0) {

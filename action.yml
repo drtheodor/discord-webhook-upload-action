@@ -20,10 +20,6 @@ inputs:
     description: 'File to send'
     required: false
     default: ''
-  mode:
-    description: 'Action mode'
-    required: false
-    default: 'echo'
   message:
     description: 'Message to send'
     required: true
