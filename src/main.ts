@@ -106,7 +106,10 @@ export async function run(): Promise<void> {
 
     if (commits && commits.length > 0) {
       const formattedCommits = commits.flatMap(fmtCommit).join('\n')
-      finalMessage += `\n${formattedCommits}`
+
+      fmt(finalMessage, {
+        commits: formattedCommits
+      })
     }
   }
 
