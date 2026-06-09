@@ -101,11 +101,14 @@ export async function run(): Promise<void> {
   const baseMessage = core.getInput('message')
 
   let finalMessage = baseMessage
+  console.log('Base message: ', finalMessage)
 
   if ('commits' in github.context.payload) {
+    console.log('Commits are in the payload')
     const commits = github.context.payload.commits as Commit[]
 
     if (commits && commits.length > 0) {
+      console.log('Commits found')
       const formattedCommits = commits.flatMap(fmtCommit).join('\n')
 
       fmt<MessageFormat>(finalMessage, {
