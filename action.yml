@@ -21,9 +21,9 @@ inputs:
     required: false
     default: ''
   mode:
-    description: 'Action mode: currently only supports "commit"'
+    description: 'Action mode'
     required: false
-    default: 'commit'
+    default: 'echo'
   message:
     description: 'Message to send'
     required: true
