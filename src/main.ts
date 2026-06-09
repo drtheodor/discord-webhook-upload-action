@@ -78,15 +78,15 @@ function fmtCommit(commit: Commit): string[] {
     .map(author => fmt<AuthorFormat>(messageAuthorFmt, author))
     .join(messageAuthorSep)
 
-  const formattedHeader = fmt<CommitMessageFormat>(commitHeaderFmt, {
-    message: commitHeader
+  const formattedHeader = fmt<CommitFormat>(commitHeaderFmt, {
+    author: authorBlock,
+    commitUrl: commit.url,
+    commitMessage: commitHeader
   })
 
   const formattedBody = commitDesc.map(message =>
-    fmt<CommitFormat>(commitMessageFmt, {
-      author: authorBlock,
-      commitUrl: commit.url,
-      commitMessage: message
+    fmt<CommitMessageFormat>(commitMessageFmt, {
+      message
     })
   )
 
