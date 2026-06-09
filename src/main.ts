@@ -102,7 +102,10 @@ export async function run(): Promise<void> {
 
   let finalMessage = baseMessage
 
-  if ('commits' in github.context.payload) {
+  if (
+    'commits' in github.context.payload &&
+    baseMessage.includes('${commits}')
+  ) {
     const commits = github.context.payload.commits as Commit[]
 
     if (commits && commits.length > 0) {
