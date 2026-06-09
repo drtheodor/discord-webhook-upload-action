@@ -1,9 +1,10 @@
 name: 'Discord Webhook Upload'
 description: 'Send a message to discord webhook on a commit'
-icon: 'cast'
-color: 'blue'
+branding:
+  icon: 'cast'
+  color: 'blue'
 inputs:
-  url: # id of input
+  url:
     description: 'Webhook URL'
     required: true
     default: ''
@@ -23,15 +24,27 @@ inputs:
     description: 'Action mode: currently only supports "commit"'
     required: false
     default: 'commit'
-  message_header:
+  message:
     description: 'Message to send'
     required: true
     default: |
-      New dev build:
-  message_commit:
+      ## Message header (change `message_header`) [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/ait/actions/runs/${{ github.run_id }}>)
+  msg_author:
+    description: 'Author format'
+    required: false
+    default: '[${authorName}](<${authorUrl}>)'
+  msg_author_separator:
+    description: 'Author separator'
+    required: false
+    default: ' & '
+  msg_commit:
     description: 'Per-commit message'
     required: false
-    default: '> [${commitMessage}](<${commitUrl}>) by [${authorName}](<${authorUrl}>)'
+    default: '- :sparkles: [${commitMessage}](<${commitUrl}>) by ${authors}'
+  msg_commit_desc:
+    description: 'Per-commit message description'
+    required: false
+    default: '-# > ${message}'
 runs:
   using: 'node20'
   main: 'dist/index.js'
