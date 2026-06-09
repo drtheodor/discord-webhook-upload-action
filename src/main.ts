@@ -98,19 +98,14 @@ export async function run(): Promise<void> {
 
   let finalMessage = baseMessage
 
-  if (
-    'commits' in github.context.payload &&
-    baseMessage.includes('${commits}')
-  ) {
-    const commits = github.context.payload.commits as Commit[]
+  const commits = github.context.payload.commits as Commit[]
 
-    if (commits && commits.length > 0) {
-      const formattedCommits = commits.flatMap(fmtCommit).join('\n')
+  if (commits && commits.length > 0) {
+    const formattedCommits = commits.flatMap(fmtCommit).join('\n')
 
-      fmt(finalMessage, {
-        commits: formattedCommits
-      })
-    }
+    fmt(finalMessage, {
+      commits: formattedCommits
+    })
   }
 
   const url = core.getInput('url')
